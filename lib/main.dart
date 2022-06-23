@@ -13,15 +13,21 @@ class MyApp extends StatelessWidget {
     return FutureBuilder(
       future: Future.delayed(Duration(seconds: 2),()=>100),
       builder: (context, snapshot) {
-        if(snapshot.hasData){
-          return EggApp();
-        } else if(snapshot.hasError){
-          return Text("Error!");
-        } else {
-          return SplashScreen();
-        }
+        return AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            child: _splashLoadingWidget(snapshot));
       }
     );
+  }
+
+  StatelessWidget _splashLoadingWidget(AsyncSnapshot<Object?> snapshot) {
+    if(snapshot.hasData){
+      return EggApp();
+    } else if(snapshot.hasError){
+      return Text("Error!");
+    } else {
+      return SplashScreen();
+    }
   }
 }
 
