@@ -6,8 +6,9 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Column(
+    return Container(
+      color: Colors.white,
+      child: Center(child: Column(
         children: [
           Container(width:100, height:100, child: ExtendedImage.asset("assets/egg.png")),
           CircularProgressIndicator(color: Colors.deepOrangeAccent,),
