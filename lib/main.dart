@@ -56,6 +56,7 @@ class EggApp extends StatelessWidget {
     return MaterialApp.router(
       theme: ThemeData(
         fontFamily: "NanumGothic",
+        hintColor: Colors.grey,
         primarySwatch: Colors.deepOrange,
         textTheme: TextTheme(headline3: TextStyle(fontFamily: "SSantokki")),
       ),
