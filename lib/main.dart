@@ -1,9 +1,24 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_practice1/splash_screen.dart';
+import 'package:flutter_practice1/router/locations.dart';
+import 'package:flutter_practice1/screens/auth_screen.dart';
+import 'package:flutter_practice1/screens/splash_screen.dart';
 import 'package:flutter_practice1/utils/logger.dart';
 
+final _routerDelegate = BeamerDelegate(
+    guards: [BeamGuard(
+      pathPatterns: ["/"],
+      check: (context, location) {
+        return false;
+        },
+      beamToNamed: (origin, target)=>"/auth",
+    )],
+  locationBuilder: BeamerLocationBuilder(
+      beamLocations: [HomeLocation(),AuthLocation()]),
+);
+
 void main(){
-  logger.d("My first log by logger");
+
   runApp(MyApp());
 }
 
@@ -13,10 +28,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.delayed(Duration(seconds: 2),()=>100),
+      future: Future.delayed(const Duration(seconds: 2),()=>100),
       builder: (context, snapshot) {
         return AnimatedSwitcher(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             child: _splashLoadingWidget(snapshot));
       }
     );
@@ -26,7 +41,7 @@ class MyApp extends StatelessWidget {
     if(snapshot.hasData){
       return EggApp();
     } else if(snapshot.hasError){
-      return Text("Error!");
+      return const Text("Error!");
     } else {
       return SplashScreen();
     }
@@ -38,8 +53,9 @@ class EggApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
+    return MaterialApp.router(
+      routeInformationParser: BeamerParser(),
+      routerDelegate: _routerDelegate,
     );
   }
 }
