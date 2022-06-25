@@ -1,0 +1,1 @@
+const double default_padding = 16.0;

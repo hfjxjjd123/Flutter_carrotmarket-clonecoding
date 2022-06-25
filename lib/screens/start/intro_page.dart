@@ -1,5 +1,5 @@
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter_practice1/screens/auth_screen.dart';
+import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/logger.dart';

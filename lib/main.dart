@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_practice1/router/locations.dart';
-import 'package:flutter_practice1/screens/auth_screen.dart';
+import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter_practice1/screens/splash_screen.dart';
 import 'package:flutter_practice1/utils/logger.dart';
 
@@ -59,6 +59,11 @@ class EggApp extends StatelessWidget {
         hintColor: Colors.grey,
         primarySwatch: Colors.deepOrange,
         textTheme: TextTheme(headline3: TextStyle(fontFamily: "SSantokki")),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 2,
+          titleTextStyle: TextStyle(color: Colors.black87,fontFamily: "NanumGothic"),
+        ),
       ),
       routeInformationParser: BeamerParser(),
       routerDelegate: _routerDelegate,
