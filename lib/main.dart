@@ -55,6 +55,11 @@ class EggApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(
+        textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(
+          backgroundColor: Colors.deepOrange,
+          primary: Colors.white,
+          minimumSize: Size(39, 39),
+        )),
         fontFamily: "NanumGothic",
         hintColor: Colors.grey,
         primarySwatch: Colors.deepOrange,
