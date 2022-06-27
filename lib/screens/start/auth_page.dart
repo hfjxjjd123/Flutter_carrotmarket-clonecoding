@@ -85,7 +85,9 @@ class _AuthPageState extends State<AuthPage> {
                       children: [
                         ExtendedImage.asset("assets/images/padlock.png", width: size.width*0.13, height: size.width*0.13,),
                         SizedBox(width: 12,),
-                        Text("계란마켓은 전화번호로 가입해요.\n번호는 안전하게 저장되며 어디에도 공개되지 않아요")
+                        Container(
+                            width: size.width*0.75,
+                            child: Text("계란마켓은 전화번호로 가입해요.\n번호는 안전하게 저장되며 어디에도 공개되지 않아요"))
                       ],
                     ),
                     SizedBox(height: 16,),
@@ -95,7 +97,7 @@ class _AuthPageState extends State<AuthPage> {
                         TextFormField(
                           controller: _phoneController,
                           keyboardType: TextInputType.phone,
-                          inputFormatters: [MaskedInputFormatter("010-0000-0000")],
+                          inputFormatters: [MaskedInputFormatter("000-0000-0000")],
                           decoration: InputDecoration(
                             hintText: "전화번호: 010-0000-0000",
                             border: OutlineInputBorder(),
