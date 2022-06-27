@@ -48,13 +48,19 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  void verificifation() async {
+  void verification() async {
     setState((){_verificationState = VerificationState.verifying;});
     await Future.delayed(Duration(seconds: 2));
     setState((){_verificationState = VerificationState.verified;});
-
     context.read<UserProvider>().setUserAuth(true);
-    logger.d(Provider.of<UserProvider>(context).userState);
+    logger.d(context.read<UserProvider>().userState);
+    ///참고 - user_provider.dart 파일의 Provider 참고
+    ///에러포인트: logger.d(context.read<UserProvider>().userState); 로 true값이 호출되었음.
+    ///따라서 setUserAuth(true)로 Provider 안에 있는 변수 userState가 false->true 로 바뀌었음을 알 수 있음
+    ///setUserAuth(true) 메소드로 Provider의 변수가 바뀌었으므로 setUserAuth메소드가 실행됐음을 알 수 있음
+    ///setUserAuth메소드의 _userLoggedIn = authState;부분이 실행됐으니
+    ///그 다음줄인 notifyListeners(); 또한 호출되었음 debugging 과정에서도 저 코드를 거친다는 것을 확인
+    ///=> notifyListeners();를 쓰는 부분까지는 문제가 없다고 판단.
   }
 
   @override
@@ -142,7 +148,7 @@ class _AuthPageState extends State<AuthPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                verificifation();
+                                verification();
                               },
                               child: (_verificationState==VerificationState.verifying)?CircularProgressIndicator(color: Colors.white,):Text("인증번호 인증")),
                           ],
