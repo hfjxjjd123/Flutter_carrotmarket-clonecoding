@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_practice1/router/locations.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter_practice1/screens/splash_screen.dart';
+import 'package:flutter_practice1/states/user_provider.dart';
 import 'package:flutter_practice1/utils/logger.dart';
+import 'package:provider/provider.dart';
+
+bool login = false;
 
 final _routerDelegate = BeamerDelegate(
     guards: [BeamGuard(
       pathPatterns: ["/"],
       check: (context, location) {
-        return false;
+        logger.d(Provider.of<UserProvider>(context, listen: true).userState);
+        return Provider.of<UserProvider>(context, listen: true).userState;
+
         },
       beamToNamed: (origin, target)=>"/auth",
     )],
@@ -53,25 +59,28 @@ class EggApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      theme: ThemeData(
-        textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(
-          backgroundColor: Colors.deepOrange,
-          primary: Colors.white,
-          minimumSize: Size(39, 39),
-        )),
-        fontFamily: "NanumGothic",
-        hintColor: Colors.grey,
-        primarySwatch: Colors.deepOrange,
-        textTheme: TextTheme(headline3: TextStyle(fontFamily: "SSantokki")),
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.white,
-          elevation: 2,
-          titleTextStyle: TextStyle(color: Colors.black87,fontFamily: "NanumGothic"),
+    return ChangeNotifierProvider<UserProvider>(
+      create: (BuildContext context) { return UserProvider(); },
+      child: MaterialApp.router(
+        theme: ThemeData(
+          textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(
+            backgroundColor: Colors.deepOrange,
+            primary: Colors.white,
+            minimumSize: Size(39, 39),
+          )),
+          fontFamily: "NanumGothic",
+          hintColor: Colors.grey,
+          primarySwatch: Colors.deepOrange,
+          textTheme: TextTheme(headline3: TextStyle(fontFamily: "SSantokki")),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.white,
+            elevation: 2,
+            titleTextStyle: TextStyle(color: Colors.black87,fontFamily: "NanumGothic"),
+          ),
         ),
+        routeInformationParser: BeamerParser(),
+        routerDelegate: _routerDelegate,
       ),
-      routeInformationParser: BeamerParser(),
-      routerDelegate: _routerDelegate,
     );
   }
 }
