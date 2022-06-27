@@ -4,6 +4,7 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../../consts/consts.dart';
+import '../../main.dart';
 import '../../utils/logger.dart';
 
 TextEditingController _phoneController = TextEditingController(
@@ -46,14 +47,26 @@ class AuthPage extends StatefulWidget {
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
+class UserProvider extends ChangeNotifier{
+  bool _userLoggedIn =false;
+
+  void setUserAuth(bool authState){
+    _userLoggedIn = authState;
+    notifyListeners();
+  }
+
+
+  bool get userState => _userLoggedIn;
+
+}
 
 class _AuthPageState extends State<AuthPage> {
   void verification() async {
     setState((){_verificationState = VerificationState.verifying;});
     await Future.delayed(Duration(seconds: 2));
     setState((){_verificationState = VerificationState.verified;});
-    context.read<UserProvider>().setUserAuth(true);
-    logger.d(context.read<UserProvider>().userState);
+    Provider.of<UserPro>(context, listen: false).setUserAuth(true);
+    logger.d(Provider.of<UserPro>(context, listen: false).userState);
     ///참고 - user_provider.dart 파일의 Provider 참고
     ///에러포인트: logger.d(context.read<UserProvider>().userState); 로 true값이 호출되었음.
     ///따라서 setUserAuth(true)로 Provider 안에 있는 변수 userState가 false->true 로 바뀌었음을 알 수 있음

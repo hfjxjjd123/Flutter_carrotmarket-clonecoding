@@ -12,17 +12,5 @@ class HomeLocation extends BeamLocation{
   }
 
   @override
-  List<Pattern> get pathPatterns => ["/"];
-}
-
-class AuthLocation extends BeamLocation{
-  @override
-  List<BeamPage> buildPages(BuildContext context, RouteInformationSerializable state) {
-    return[
-      BeamPage(child: SignUpScreen(), key: ValueKey("auth"))
-    ];
-  }
-  @override
-  List<Pattern> get pathPatterns => ["/auth"];
-
+  List<Pattern> get pathBlueprints => ["/"];
 }
