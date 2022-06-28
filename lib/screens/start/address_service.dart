@@ -26,42 +26,42 @@ class AddressService{
     return addressModel;
   }
 
-  Future<List<AddressModel2>>? findAddressByCoordinate(double log, double lat) async {
+  Future<List<AddressModel2>> findAddressByCoordinate(double log, double lat) async {
 
     final List<Map<String, dynamic>> formDatas = [];
 
     formDatas.add({
       'key':VWORLD_KEY,
       'service':'address',
-      'type':'both',
+      'type':'PARCEL',
       'request':'GetAddress',
       'point':"$log,$lat"
     });
     formDatas.add({
       'key':VWORLD_KEY,
       'service':'address',
-      'type':'both',
+      'type':'PARCEL',
       'request':'GetAddress',
       'point':"${log+0.01},$lat"
     });
     formDatas.add({
       'key':VWORLD_KEY,
       'service':'address',
-      'type':'both',
+      'type':'PARCEL',
       'request':'GetAddress',
       'point':"${log-0.01},$lat"
     });
     formDatas.add({
       'key':VWORLD_KEY,
       'service':'address',
-      'type':'both',
+      'type':'PARCEL',
       'request':'GetAddress',
       'point':"$log,${lat+0.01}"
     });
     formDatas.add({
       'key':VWORLD_KEY,
       'service':'address',
-      'type':'both',
+      'type':'PARCEL',
       'request':'GetAddress',
       'point':"$log,${log-0.01}"
     });
@@ -69,7 +69,7 @@ class AddressService{
     final Map<String, dynamic> formData={
       'key':VWORLD_KEY,
       'service':'address',
-      'type':'both',
+      'type':'PARCEL',
       'request':'GetAddress',
       'point':"$log,$lat"
     };
@@ -80,13 +80,14 @@ class AddressService{
           .catchError((e){logger.e(e.message);});
       logger.d(response);
 
-      if(response.data['status'] == "OK") {
+      if(response.data['response']['status'] == "OK") {
         AddressModel2 addressModel2 = AddressModel2.fromJson(
             response.data["response"]);
         addresses.add(addressModel2);
       }
 
     }
+    logger.d(addresses);
     return addresses;
   }
 
