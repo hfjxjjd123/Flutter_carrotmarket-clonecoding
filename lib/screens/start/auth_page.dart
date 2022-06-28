@@ -47,26 +47,13 @@ class AuthPage extends StatefulWidget {
   @override
   State<AuthPage> createState() => _AuthPageState();
 }
-class UserProvider extends ChangeNotifier{
-  bool _userLoggedIn =false;
-
-  void setUserAuth(bool authState){
-    _userLoggedIn = authState;
-    notifyListeners();
-  }
-
-
-  bool get userState => _userLoggedIn;
-
-}
 
 class _AuthPageState extends State<AuthPage> {
   void verification() async {
     setState((){_verificationState = VerificationState.verifying;});
     await Future.delayed(Duration(seconds: 2));
     setState((){_verificationState = VerificationState.verified;});
-    Provider.of<UserPro>(context, listen: false).setUserAuth(true);
-    logger.d(Provider.of<UserPro>(context, listen: false).userState);
+    Provider.of<UserProvider>(context, listen: false).setUserAuth(true);
     ///참고 - user_provider.dart 파일의 Provider 참고
     ///에러포인트: logger.d(context.read<UserProvider>().userState); 로 true값이 호출되었음.
     ///따라서 setUserAuth(true)로 Provider 안에 있는 변수 userState가 false->true 로 바뀌었음을 알 수 있음

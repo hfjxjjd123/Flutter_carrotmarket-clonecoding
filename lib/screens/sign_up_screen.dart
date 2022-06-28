@@ -5,6 +5,8 @@ import 'package:flutter_practice1/screens/start/auth_page.dart';
 import 'package:flutter_practice1/screens/start/intro_page.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
 
+import 'start/address_service.dart';
+
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({Key? key}) : super(key: key);
 
@@ -22,7 +24,6 @@ class SignUpScreen extends StatelessWidget {
       IntroPage(_authPageController),
       AddressPage(),
       AuthPage(),
-      Container(color: Colors.accents[5],),
     ], );
   }
 }
