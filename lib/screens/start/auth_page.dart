@@ -20,6 +20,7 @@ TextEditingController _codeController = TextEditingController(
 
 enum VerificationState{
   none,
+  codeSending,
   codeSent,
   verifying,
   verified
@@ -31,6 +32,7 @@ double authBoxHeight(VerificationState _verificationState){
   switch(_verificationState){
 
     case VerificationState.none:
+    case VerificationState.codeSending:
       return 0;
       break;
     case VerificationState.codeSent:
@@ -57,18 +59,25 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   void verification() async {
-    setState((){_verificationState = VerificationState.verifying;});
-
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId!,
-        smsCode: _codeController.text);
-
+    setState(() {
+      _verificationState = VerificationState.verifying;
+    });
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: _verificationId!,
+          smsCode: _codeController.text);
     await FirebaseAuth.instance.signInWithCredential(credential);
-    //실패시 갈라치기? 실패 판단?
+  }
+  catch(e){
+    logger.e("failed!!");
+    SnackBar snackBar = SnackBar(content: Text("입력하신 인증코드가 틀립니다"));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }//실패시 갈라치기? 실패 판단?
     setState((){_verificationState = VerificationState.verified;});
   }
 
   String? _verificationId;
+  int? _forceResendingToken;
 
   @override
   Widget build(BuildContext context) {
@@ -120,39 +129,50 @@ class _AuthPageState extends State<AuthPage> {
                           },
                         ),
                         TextButton(
+                          child: Text((_verificationState!=VerificationState.codeSending)?"인증문자 받기":"인증문자 발송중", style: TextStyle(color: Colors.white),),
                           onPressed: () async {
-                            String phoneNum = _phoneController.text;
-                            phoneNum.replaceAll(' ', '');
-                            phoneNum.replaceFirst('0', '');
+                            if(_verificationState != VerificationState.codeSending){
+                              if(_formKey.currentState != null){
+                                bool passed = _formKey.currentState!.validate();
+                                if(passed){
+                                  String phoneNum = _phoneController.text;
+                                  phoneNum.replaceAll(' ', '');
+                                  phoneNum.replaceFirst('0', '');
+                                  FirebaseAuth auth = FirebaseAuth.instance;
 
-                            if(_formKey.currentState != null){
-                              bool passed = _formKey.currentState!.validate();
-                              if(passed){
-                                FirebaseAuth auth = FirebaseAuth.instance;
-
-                                await auth.verifyPhoneNumber(
-                                  phoneNumber: '+82$phoneNum',
-                                  verificationCompleted: (PhoneAuthCredential credential) async {
-
-                                    await auth.signInWithCredential(credential);
-                                  },
-                                  codeAutoRetrievalTimeout: (String verificationId) {  },
-                                  verificationFailed: (FirebaseAuthException error) {  },
-                                  codeSent: (String verificationId, int? forceResendingToken) {
-                                    setState((){
-                                      _verificationState = VerificationState.codeSent;
-                                    });
-                                    _verificationId = verificationId;
-                                  },
-                                );
+                                  setState((){
+                                    _verificationState = VerificationState.codeSending;
+                                  });
 
 
+                                  await auth.verifyPhoneNumber(
+                                    phoneNumber: '+82$phoneNum',
+                                    verificationCompleted: (PhoneAuthCredential credential) async {
 
+                                      await auth.signInWithCredential(credential);
+                                    },
+                                    forceResendingToken: _forceResendingToken,
+                                    codeAutoRetrievalTimeout: (String verificationId) {  },
+
+                                    codeSent: (String verificationId, int? forceResendingToken) {
+                                      setState((){
+                                        _verificationState = VerificationState.codeSent;
+                                        _forceResendingToken = forceResendingToken;
+                                      });
+                                      _verificationId = verificationId;
+                                    },
+                                    verificationFailed: (FirebaseAuthException error) { _verificationState = VerificationState.none; },
+                                  );
+
+
+
+                                }
                               }
                             }
 
+
                           },
-                          child: Text("인증문자 받기", style: TextStyle(color: Colors.white),),
+
                         ),
                       ],
                     ),
