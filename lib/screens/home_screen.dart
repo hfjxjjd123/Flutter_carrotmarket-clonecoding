@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_practice1/main.dart';
 import 'package:flutter_practice1/screens/home/items_page.dart';
@@ -14,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   void toLogout() {
     setState((){
-      context.read<UserProvider>().setUserAuth(false);
+      FirebaseAuth.instance.signOut();
     });
   }
   int _selectedIndex = 0;

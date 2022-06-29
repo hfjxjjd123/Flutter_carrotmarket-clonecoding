@@ -1,4 +1,5 @@
 import 'package:extended_image/extended_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
@@ -8,13 +9,14 @@ import '../../consts/consts.dart';
 import '../../main.dart';
 import '../../utils/logger.dart';
 
+GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
 TextEditingController _phoneController = TextEditingController(
-  text: "010"
-);
-TextEditingController _codeController = TextEditingController(
+    text: "010"
 );
 
-GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+TextEditingController _codeController = TextEditingController(
+);
 
 enum VerificationState{
   none,
@@ -43,26 +45,30 @@ double authBoxHeight(VerificationState _verificationState){
 
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  AuthPage({Key? key}) : super(key: key);
 
   @override
   State<AuthPage> createState() => _AuthPageState();
+
+
+
+
 }
 
 class _AuthPageState extends State<AuthPage> {
   void verification() async {
     setState((){_verificationState = VerificationState.verifying;});
-    await Future.delayed(Duration(seconds: 2));
+
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: _verificationId!,
+        smsCode: _codeController.text);
+
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    //실패시 갈라치기? 실패 판단?
     setState((){_verificationState = VerificationState.verified;});
-    Provider.of<UserProvider>(context, listen: false).setUserAuth(true);
-    ///참고 - user_provider.dart 파일의 Provider 참고
-    ///에러포인트: logger.d(context.read<UserProvider>().userState); 로 true값이 호출되었음.
-    ///따라서 setUserAuth(true)로 Provider 안에 있는 변수 userState가 false->true 로 바뀌었음을 알 수 있음
-    ///setUserAuth(true) 메소드로 Provider의 변수가 바뀌었으므로 setUserAuth메소드가 실행됐음을 알 수 있음
-    ///setUserAuth메소드의 _userLoggedIn = authState;부분이 실행됐으니
-    ///그 다음줄인 notifyListeners(); 또한 호출되었음 debugging 과정에서도 저 코드를 거친다는 것을 확인
-    ///=> notifyListeners();를 쓰는 부분까지는 문제가 없다고 판단.
   }
+
+  String? _verificationId;
 
   @override
   Widget build(BuildContext context) {
@@ -114,13 +120,33 @@ class _AuthPageState extends State<AuthPage> {
                           },
                         ),
                         TextButton(
-                          onPressed: (){
+                          onPressed: () async {
+                            String phoneNum = _phoneController.text;
+                            phoneNum.replaceAll(' ', '');
+                            phoneNum.replaceFirst('0', '');
+
                             if(_formKey.currentState != null){
                               bool passed = _formKey.currentState!.validate();
                               if(passed){
-                                setState((){
-                                  _verificationState = VerificationState.codeSent;
-                                });
+                                FirebaseAuth auth = FirebaseAuth.instance;
+
+                                await auth.verifyPhoneNumber(
+                                  phoneNumber: '+82$phoneNum',
+                                  verificationCompleted: (PhoneAuthCredential credential) async {
+
+                                    await auth.signInWithCredential(credential);
+                                  },
+                                  codeAutoRetrievalTimeout: (String verificationId) {  },
+                                  verificationFailed: (FirebaseAuthException error) {  },
+                                  codeSent: (String verificationId, int? forceResendingToken) {
+                                    setState((){
+                                      _verificationState = VerificationState.codeSent;
+                                    });
+                                    _verificationId = verificationId;
+                                  },
+                                );
+
+
 
                               }
                             }

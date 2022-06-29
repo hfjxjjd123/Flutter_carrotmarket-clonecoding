@@ -1,14 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
 class UserProvider extends ChangeNotifier{
   bool _userLoggedIn =false;
 
-  void setUserAuth(bool authState){
-    _userLoggedIn = authState;
-    notifyListeners();
+  UserProvider(){
+    initUser();
   }
 
+  User? _user;
 
-  bool get userState => _userLoggedIn;
+  void initUser(){
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      _user = user;
+      notifyListeners();
+    });
+  }
+
+  User? get user => _user;
+
+  void setNewUser(User? user){
+
+  }
 
 }
