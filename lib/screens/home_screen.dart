@@ -51,10 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
+          ItemsPage(),
           Container(color: Colors.accents[0]),
           Container(color: Colors.accents[1]),
           Container(color: Colors.accents[2]),
-          Container(color: Colors.accents[3]),
         ],
       ),
       appBar: AppBar(

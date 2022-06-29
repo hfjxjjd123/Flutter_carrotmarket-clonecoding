@@ -61,7 +61,11 @@ class EggApp extends StatelessWidget {
           fontFamily: "NanumGothic",
           hintColor: Colors.grey,
           primarySwatch: Colors.deepOrange,
-          textTheme: TextTheme(headline3: TextStyle(fontFamily: "SSantokki")),
+          textTheme: TextTheme(
+            headline3: TextStyle(fontFamily: "SSantokki"),
+            subtitle1: TextStyle(fontSize: 15),
+            subtitle2: TextStyle(fontSize: 11, color: Colors.grey[600]),
+          ),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.white,
             elevation: 2,

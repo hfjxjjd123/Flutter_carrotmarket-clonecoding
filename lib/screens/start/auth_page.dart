@@ -93,6 +93,7 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                     SizedBox(height: 16,),
                     Column(
+
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         TextFormField(
@@ -140,6 +141,13 @@ class _AuthPageState extends State<AuthPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             TextFormField(
+                              // validator: (authCode){
+                              //   if(authCode != null && authCode.length==6){
+                              //     return null;
+                              //   } else{
+                              //     return "6자리 인증코드를 입력하세요";
+                              //   }
+                              // }, validator 가 2개일 때,
                               controller: _codeController,
                               keyboardType: TextInputType.number,
                               inputFormatters: [MaskedInputFormatter("000000")],
