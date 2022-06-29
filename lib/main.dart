@@ -12,7 +12,7 @@ bool login = false;
 
 
 void main(){
-
+  Provider.debugCheckInvalidValueType=null;
   runApp(MyApp());
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_practice1/main.dart';
+import 'package:flutter_practice1/screens/home/items_page.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,14 +17,67 @@ class _HomeScreenState extends State<HomeScreen> {
       context.read<UserProvider>().setUserAuth(false);
     });
   }
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: NearBy',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: Chatting',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 3: MyTab',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          Container(color: Colors.accents[0]),
+          Container(color: Colors.accents[1]),
+          Container(color: Colors.accents[2]),
+          Container(color: Colors.accents[3]),
+        ],
+      ),
       appBar: AppBar(
-        actions: [IconButton(onPressed: (){
-          toLogout();
-        }, icon: Icon(Icons.logout))],
+        centerTitle: false,
+        title: Text("신천동", style: Theme.of(context).appBarTheme.titleTextStyle,),
+        actions: [
+          IconButton(onPressed: (){}, icon: Icon(Icons.search)),
+          IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
+          IconButton(onPressed: (){toLogout();}, icon: Icon(Icons.logout)),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "홈"),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: "내근처"),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: "채팅"),
+          BottomNavigationBarItem(icon: Icon(Icons.egg), label: "나와 계란"),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.black87,
+        unselectedItemColor: Colors.black54,
+        type: BottomNavigationBarType.fixed,
+        onTap: _onItemTapped,
       ),
       );
   }

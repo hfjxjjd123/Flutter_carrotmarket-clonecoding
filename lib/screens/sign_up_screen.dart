@@ -4,6 +4,7 @@ import 'package:flutter_practice1/screens/start/address_page.dart';
 import 'package:flutter_practice1/screens/start/auth_page.dart';
 import 'package:flutter_practice1/screens/start/intro_page.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'start/address_service.dart';
 
@@ -17,13 +18,18 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      // physics: NeverScrollableScrollPhysics(),
-      controller: _authPageController,
-      children:[
-      IntroPage(_authPageController),
-      AddressPage(),
-      AuthPage(),
-    ], );
+    return Provider<PageController>.value(
+      value: _authPageController,
+      child: Scaffold(
+        body: PageView(
+          // physics: NeverScrollableScrollPhysics(),
+          controller: _authPageController,
+          children:[
+          IntroPage(),
+          AddressPage(),
+          AuthPage(),
+        ], ),
+      ),
+    );
   }
 }

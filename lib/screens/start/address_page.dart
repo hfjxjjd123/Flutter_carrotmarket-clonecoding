@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_practice1/screens/start/address_service.dart';
 import 'package:flutter_practice1/utils/logger.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/address_model.dart';
 import '../../data/address_model2.dart';
 
@@ -99,6 +101,11 @@ class _AddressPageState extends State<AddressPage> {
                       return Container();
                    }
                      return ListTile(
+                       onTap: (){
+                         _saveAddressOnSharedPreference(_addressModel!.result!.items![index].address!.road??"");
+                         context.read<PageController>()
+                             .animateToPage(2, duration: Duration(milliseconds: 450), curve: Curves.ease);
+                       },
                         title: Text(_addressModel!.result!.items![index].address!.road??""),
                         subtitle: Text(_addressModel!.result!.items![index].address!.parcel??""),
 
@@ -115,6 +122,11 @@ class _AddressPageState extends State<AddressPage> {
                         return Container();
                       }
                       return ListTile(
+                        onTap: (){
+                          _saveAddressOnSharedPreference(_addressModel2List[index].result![0].text??"");
+                          context.read<PageController>()
+                              .animateToPage(2, duration: Duration(milliseconds: 450), curve: Curves.ease);
+                        },
                         title: Text(_addressModel2List[index].result![0].text??""),
                         subtitle: Text(_addressModel2List[index].result![0].zipcode??""),
 
@@ -127,4 +139,9 @@ class _AddressPageState extends State<AddressPage> {
       ),
     );
   }
+  _saveAddressOnSharedPreference(String address) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('address', address);
+  }
+
 }

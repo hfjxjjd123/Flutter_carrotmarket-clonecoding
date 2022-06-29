@@ -1,14 +1,14 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/logger.dart';
 
 
 final portionOfPosSize = 0.1;
 class IntroPage extends StatelessWidget {
-  IntroPage(this.controller, {Key? key}) : super(key: key);
-  PageController controller;
+  IntroPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class IntroPage extends StatelessWidget {
                     children: [
                       TextButton(
                           onPressed: (){
-                            controller.nextPage(duration: Duration(milliseconds: 450), curve: Curves.ease);
+                            context.read<PageController>().animateToPage(1, duration: Duration(milliseconds: 450), curve: Curves.ease);
                           },
                           child: Text("내 동네 설정하고 시작하기",
                             style: TextStyle(color: Colors.white),),

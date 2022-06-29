@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../consts/consts.dart';
 import '../../main.dart';
 import '../../utils/logger.dart';
@@ -167,5 +168,9 @@ class _AuthPageState extends State<AuthPage> {
         );
       }
     );
+  }
+  _getAddress()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String address = prefs.getString('address')??"";
   }
 }
