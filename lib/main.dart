@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_practice1/router/locations.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
@@ -13,16 +14,25 @@ bool login = false;
 
 void main(){
   Provider.debugCheckInvalidValueType=null;
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.delayed(const Duration(seconds: 1),()=>100),
+      future: _initialization,
       builder: (context, snapshot) {
         return AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
@@ -32,10 +42,11 @@ class MyApp extends StatelessWidget {
   }
 
   StatelessWidget _splashLoadingWidget(AsyncSnapshot<Object?> snapshot) {
-    if(snapshot.hasData){
+    if(snapshot.hasError){
+      print('error occur while loading');
+      return Text("error occur");
+    } else if(snapshot.connectionState == ConnectionState.done){
       return EggApp();
-    } else if(snapshot.hasError){
-      return const Text("Error!");
     } else {
       return SplashScreen();
     }
