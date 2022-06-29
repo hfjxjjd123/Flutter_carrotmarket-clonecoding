@@ -95,14 +95,6 @@ BeamerDelegate _routerDelegate = BeamerDelegate(
   guards: [BeamGuard(
     pathBlueprints: ["/"],
     check: (context, location) {
-      logger.d("HowMany? 현재상태: ${Provider.of<UserProvider>(context, listen: true).user}");
-      ///에러포인트: provider에서 notifyListeners()를 실행했음
-      ///하지만 앱을 실행했을 때 logger.d("HowMany?");에서 HowMany가 한 번만 호출됨
-      ///check 부분이 provider가 바뀌었을때 다시 실행돼야 하는데 그러지 않았음을 알 수 있음
-      ///Provider를 통한 위젯 리빌딩 과정이 일어나지 않았음을 알 수 있음
-      ///=>context.watch<UserProvider>().userState 부분에서 .watch()가 기능수행을 안해서
-      ///MaterialApp.router(Provider를 상속받은 상위위젯)가 리빌딩되지 않은게 원인이라고
-      ///리빌딩이 왜 안되는 거냐고
       return (Provider.of<UserProvider>(context, listen: true).user != null);
 
     },
