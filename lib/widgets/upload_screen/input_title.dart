@@ -13,6 +13,7 @@ class InputTitle extends StatelessWidget {
         contentPadding: EdgeInsets.all(18),
         hintText: "글 제목",
         enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
       ),
     );
   }

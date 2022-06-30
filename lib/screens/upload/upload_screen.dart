@@ -1,5 +1,7 @@
 import 'package:beamer/beamer.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter_practice1/main.dart';
 import 'package:flutter_practice1/widgets/upload_screen/dividor.dart';
 import 'package:flutter_practice1/widgets/upload_screen/image_listview.dart';
@@ -13,6 +15,11 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
+
+  bool _pricePrefered = false;
+  TextEditingController _priceController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,15 +32,76 @@ class _UploadScreenState extends State<UploadScreen> {
           Padding(
             padding: EdgeInsets.all(3),
             child: ListTile(
+              onTap: (){
+                context.beamToNamed("/upload/select_category");
+              },
               dense: true,
               title: Text("선택", style: TextStyle(fontSize: 14),),
-              trailing: IconButton(
-                icon: Icon(Icons.navigate_next),
-                onPressed: (){},
+              trailing: Icon(Icons.navigate_next),
               ),
             ),
+          Dividor(),
+          Row(
+            children: [
+              Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 18.0),
+                    child: TextFormField(
+                      inputFormatters: [MoneyInputFormatter(mantissaLength: 0, trailingSymbol: "원")],
+                      onChanged: (value){
+                        if(value == '0원' || value=='0'){
+                          _priceController.clear();
+                        }
+                        setState((){});
+                      },
+                      controller: _priceController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: "얼마에 파시겠어요?",
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        prefixIcon: ImageIcon(
+                          ExtendedAssetImageProvider(
+                            "assets/images/won1.png"
+                          ),
+                          color: (_priceController.text.isEmpty)
+                              ?Colors.black38
+                              :Colors.black87,
+                        ),
+                        prefixIconConstraints: BoxConstraints(maxWidth: 20),
+                      ),
+                    ),
+                  )
+              ),
+              TextButton.icon(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  primary: Theme.of(context).primaryColor,
+                ),
+                label: Text("가격제안 받기", style: TextStyle(color: (_pricePrefered)?Theme.of(context).primaryColor:Colors.black38),),
+                icon: Icon(
+                    (_pricePrefered)?Icons.check_circle:Icons.check_circle_outline,
+                    color: (_pricePrefered)?Theme.of(context).primaryColor:Colors.black38),
+                onPressed: () {
+                 setState((){
+                   _pricePrefered = !_pricePrefered;
+                 });
+                },
+              )
+            ],
           ),
           Dividor(),
+          TextFormField(
+            maxLines: 12,
+            maxLength: 200,
+            keyboardType: TextInputType.multiline,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(18),
+              hintText: "내용을 입력하세요",
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+            ),
+          ),
 
 
 

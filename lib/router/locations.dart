@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter_practice1/screens/home_screen.dart';
 import 'package:flutter_practice1/screens/upload/upload_screen.dart';
+import '../screens/upload/upload_category.dart';
 
 class HomeLocation extends BeamLocation{
   @override
@@ -16,6 +17,8 @@ class HomeLocation extends BeamLocation{
   @override
   List<Pattern> get pathBlueprints => ["/"];
 }
+
+
 class UploadLocation extends BeamLocation{
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
@@ -23,10 +26,12 @@ class UploadLocation extends BeamLocation{
       ...HomeLocation().buildPages(context,state),
       if(state.pathBlueprintSegments.contains('upload'))
         BeamPage(child: UploadScreen(), key: ValueKey("upload")),
+      if(state.pathBlueprintSegments.contains('select_category'))
+        BeamPage(child: UploadCategory(), key: ValueKey("select_category")),
     ];
   }
 
   @override
-  List get pathBlueprints => ["/upload"];
+  List get pathBlueprints => ["/upload","/upload/select_category"];
 
 }
