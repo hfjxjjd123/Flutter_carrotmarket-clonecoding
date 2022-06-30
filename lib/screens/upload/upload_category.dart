@@ -1,14 +1,7 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-const List<String> categories = [
-  '선택',
-  '가구',
-  '전자기기',
-  '유아동',
-  '스포츠',
-  '메이크업',
-  '남성',
-  '여성'
-];
+import 'package:flutter_practice1/states/category_notifier.dart';
+import 'package:provider/provider.dart';
 
 class UploadCategory extends StatelessWidget {
   const UploadCategory({Key? key}) : super(key: key);
@@ -20,7 +13,12 @@ class UploadCategory extends StatelessWidget {
       body: ListView.separated(
           itemBuilder: (context, index){
             return ListTile(
-              title: Text(categories[index]),
+              onTap: (){
+                context.read<CategoryNotifier>().setKorSelected(categoryNotifier.categoryKor.values.elementAt(index));
+                context.beamBack();
+              },
+              title: Text(context.read<CategoryNotifier>().categoryKor.values.elementAt(index),
+              style: TextStyle(color: (context.read<CategoryNotifier>().categoryKor.values.elementAt(index)==context.read<CategoryNotifier>().categorySelectedKor)?Theme.of(context).primaryColor:Colors.black87),),
             );
           },
           separatorBuilder: (context, index){
@@ -30,7 +28,7 @@ class UploadCategory extends StatelessWidget {
               thickness: 1.5,
             );
           },
-          itemCount: categories.length),
+          itemCount: context.read<CategoryNotifier>().categoryKor.length),
     );
   }
 }

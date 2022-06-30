@@ -1,10 +1,13 @@
 import 'package:beamer/beamer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter_practice1/screens/home_screen.dart';
 import 'package:flutter_practice1/screens/upload/upload_screen.dart';
+import 'package:provider/provider.dart';
 import '../screens/upload/upload_category.dart';
+import '../states/category_notifier.dart';
 
 class HomeLocation extends BeamLocation{
   @override
@@ -20,6 +23,16 @@ class HomeLocation extends BeamLocation{
 
 
 class UploadLocation extends BeamLocation{
+
+  @override
+  Widget builder(BuildContext context, Widget navigator) {
+
+    return ChangeNotifierProvider.value(
+        value: categoryNotifier,
+        child: super.builder(context, navigator)
+    );
+  }
+
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return[

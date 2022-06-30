@@ -3,8 +3,10 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter_practice1/main.dart';
+import 'package:flutter_practice1/states/category_notifier.dart';
 import 'package:flutter_practice1/widgets/upload_screen/dividor.dart';
 import 'package:flutter_practice1/widgets/upload_screen/image_listview.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/upload_screen/input_title.dart';
 
 class UploadScreen extends StatefulWidget {
@@ -36,7 +38,9 @@ class _UploadScreenState extends State<UploadScreen> {
                 context.beamToNamed("/upload/select_category");
               },
               dense: true,
-              title: Text("선택", style: TextStyle(fontSize: 14),),
+              title: Text(
+              context.watch<CategoryNotifier>().categorySelectedKor,
+                style: TextStyle(fontSize: 14),),
               trailing: Icon(Icons.navigate_next),
               ),
             ),
