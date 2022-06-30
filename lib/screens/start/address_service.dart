@@ -78,7 +78,6 @@ class AddressService{
     for(Map<String, dynamic> formData in formDatas){
       final response = await Dio().get("http://api.vworld.kr/req/address", queryParameters: formData)
           .catchError((e){logger.e(e.message);});
-      logger.d(response);
 
       if(response.data['response']['status'] == "OK") {
         AddressModel2 addressModel2 = AddressModel2.fromJson(
@@ -87,7 +86,6 @@ class AddressService{
       }
 
     }
-    logger.d(addresses);
     return addresses;
   }
 

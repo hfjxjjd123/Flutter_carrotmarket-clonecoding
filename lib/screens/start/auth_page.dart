@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:flutter_practice1/consts/keys.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -223,8 +224,11 @@ class _AuthPageState extends State<AuthPage> {
       }
     );
   }
-  _getAddress()async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String address = prefs.getString('address')??"";
-  }
+  // _getAddress()async{
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String address = prefs.getString(SHARED_ADDRESS)??"";
+  //   double latitude = prefs.getDouble(SHARED_LAT)??0;
+  //   double longitude = prefs.getDouble(SHARED_LOG)??0;
+  //
+  // }
 }

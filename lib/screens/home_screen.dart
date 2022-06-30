@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_practice1/main.dart';
 import 'package:flutter_practice1/screens/home/items_page.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
+import 'package:flutter_practice1/widgets/expandable_fab.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -65,6 +66,25 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(onPressed: (){}, icon: Icon(Icons.search)),
           IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
           IconButton(onPressed: (){toLogout();}, icon: Icon(Icons.logout)),
+        ],
+      ),
+      floatingActionButton: ExpandableFab(
+        distance: 80,
+        children: [
+          MaterialButton(
+            onPressed: (){},
+          child: Icon(Icons.add, color: Colors.white,),
+            color: Theme.of(context).primaryColor,
+            shape: CircleBorder(),
+          ),
+          MaterialButton(
+            onPressed: (){},
+          child: Icon(Icons.add, color: Colors.white),
+            color: Theme.of(context).primaryColor,
+            shape: CircleBorder(),
+
+          ),
+
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
