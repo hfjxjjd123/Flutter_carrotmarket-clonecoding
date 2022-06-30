@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter_practice1/screens/home_screen.dart';
+import 'package:flutter_practice1/screens/upload/upload_screen.dart';
 
 class HomeLocation extends BeamLocation{
   @override
@@ -21,10 +22,7 @@ class UploadLocation extends BeamLocation{
     return[
       ...HomeLocation().buildPages(context,state),
       if(state.pathBlueprintSegments.contains('upload'))
-        BeamPage(child: Scaffold(
-        body: Container(color: Colors.blue,),
-        appBar: AppBar(title: Text("올리고 싶은 물건을 추가하세요"),)
-      ), key: ValueKey("upload")),
+        BeamPage(child: UploadScreen(), key: ValueKey("upload")),
     ];
   }
 
