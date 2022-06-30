@@ -1,9 +1,9 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_practice1/repo/user_service.dart';
 import 'package:shimmer/shimmer.dart';
-
-
 import '../../consts/consts.dart';
+import '../../utils/logger.dart';
 
 class ItemsPage extends StatelessWidget {
   const ItemsPage({Key? key}) : super(key: key);
@@ -38,47 +38,54 @@ class ItemsPage extends StatelessWidget {
         },
 
         itemBuilder: (context, index){
-          return SizedBox(
-            height: imageSize,
-            child: Row(
-              children: [
-                ExtendedImage.network(
-                  'https://picsum.photos/100',
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(12)
-                ),
-                SizedBox(width: small_padding,),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("work", style: Theme.of(context).textTheme.subtitle1),
-                      Text("12일전", style: Theme.of(context).textTheme.subtitle2),
-                      Text("3,000원"),
-                      Expanded(child: Container()),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          SizedBox(
-                            height: 18,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Row(
-                                children: [
-                                  Icon(Icons.chat, color: Colors.grey[700],),
-                                  Text('23',style: TextStyle(color: Colors.grey[700]),),
-                                  Icon(Icons.heart_broken,color: Colors.grey[700],),
-                                  Text('93',style: TextStyle(color: Colors.grey[700]),),
-                                ],
+          return GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: (){
+              logger.d("TOUCHED!!!");
+              // UserService().firestoreTest();
+            },
+            child: SizedBox(
+              height: imageSize,
+              child: Row(
+                children: [
+                  ExtendedImage.network(
+                    'https://picsum.photos/100',
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(12)
+                  ),
+                  SizedBox(width: small_padding,),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("work", style: Theme.of(context).textTheme.subtitle1),
+                        Text("12일전", style: Theme.of(context).textTheme.subtitle2),
+                        Text("3,000원"),
+                        Expanded(child: Container()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              height: 18,
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.chat, color: Colors.grey[700],),
+                                    Text('23',style: TextStyle(color: Colors.grey[700]),),
+                                    Icon(Icons.heart_broken,color: Colors.grey[700],),
+                                    Text('93',style: TextStyle(color: Colors.grey[700]),),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });
