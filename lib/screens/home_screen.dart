@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_practice1/main.dart';
@@ -72,7 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
         distance: 80,
         children: [
           MaterialButton(
-            onPressed: (){},
+            onPressed: (){
+              context.beamToNamed('/upload');
+            },
           child: Icon(Icons.add, color: Colors.white,),
             color: Theme.of(context).primaryColor,
             shape: CircleBorder(),

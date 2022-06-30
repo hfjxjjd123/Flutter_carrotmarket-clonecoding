@@ -79,6 +79,7 @@ class EggApp extends StatelessWidget {
           ),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.white,
+            foregroundColor: Colors.black87,
             elevation: 2,
             titleTextStyle: TextStyle(color: Colors.black87,fontFamily: "NanumGothic"),
             actionsIconTheme: IconThemeData(color: Colors.black),
@@ -101,7 +102,7 @@ BeamerDelegate _routerDelegate = BeamerDelegate(
     showPage: BeamPage(child: SignUpScreen()),
   )],
   locationBuilder: BeamerLocationBuilder(
-      beamLocations: [HomeLocation()]),
+      beamLocations: [HomeLocation(),UploadLocation()]),
 );
 
 
