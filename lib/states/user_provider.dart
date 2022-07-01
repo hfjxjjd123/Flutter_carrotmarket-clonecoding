@@ -10,13 +10,14 @@ import '../utils/logger.dart';
 
 class UserProvider extends ChangeNotifier{
   bool _userLoggedIn =false;
-
   UserProvider(){
     initUser();
   }
 
   User? _user;
   UserModel? _userModel;
+
+  get userModel => _userModel;
 
   void initUser() {
     FirebaseAuth.instance.authStateChanges().listen((user) async{

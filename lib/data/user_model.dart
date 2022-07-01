@@ -22,7 +22,7 @@ class UserModel{
     address = json['address'];
 
     geoFirePoint =GeoFirePoint((json['geoFirePoint']['geopoint']).latitude, (json['geoFirePoint']['geopoint']).longitude);
-    createdDate = (json['refs']==null)? DateTime.now().toUtc()
+    createdDate = (json['createdDate']==null)? DateTime.now().toUtc()
         :(json['createdDate'] as Timestamp).toDate();
     refs = json['refs'];
   }
