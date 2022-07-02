@@ -9,6 +9,7 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:flutter_practice1/data/items_model.dart';
 import 'package:flutter_practice1/data/user_model.dart';
 import 'package:flutter_practice1/main.dart';
+import 'package:flutter_practice1/repo/item_service.dart';
 import 'package:flutter_practice1/repo/upload_image_storage.dart';
 import 'package:flutter_practice1/states/category_notifier.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
@@ -29,10 +30,10 @@ class _UploadScreenState extends State<UploadScreen> {
 
   bool _pricePrefered = false;
   TextEditingController _priceController = TextEditingController();
-  bool _isUploading = false;
+
   TextEditingController _titleController = TextEditingController();
   TextEditingController _detailController = TextEditingController();
-
+  bool _isUploading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -157,45 +158,48 @@ class _UploadScreenState extends State<UploadScreen> {
               style: TextButton.styleFrom(backgroundColor: Colors.white, primary: Colors.black54),
               onPressed: () async{
                 _isUploading = true;
-
-
                 setState((){});
+
                 String itemKey = ItemsModel.generateItemKey(userKey);
                 List<String> imageUrls = [];
                 UserProvider userProvider = context.read<UserProvider>();
                 List<Uint8List> selectedImages = [];
-                num? price;
+                num price;
                 if(_priceController.text.isNotEmpty){
                   price = num.parse(_priceController.text.replaceAll(',', '').replaceFirst('원', ''));
-                } else price = null;
+                } else price = 0;
                 if(
                 (ImageGetter.getSelectedImages()!=null && ImageGetter.getSelectedImages()!.isNotEmpty)
-                &&(_titleController.text!=null && _titleController.text.isNotEmpty)
-                &&(price!=null)
-                &&(_detailController.text!=null && _detailController.text.isNotEmpty)
+                &&(_titleController.text.isNotEmpty)
+                &&(price!=0)
+                &&(_detailController.text.isNotEmpty)
                 ){
                   selectedImages =  ImageGetter.getSelectedImages()!;
                   if(selectedImages.length!=0){
                     imageUrls = await UploadImageStorage.uploadImageGetURLS(selectedImages, userKey);
-                    logger.d("done!- ${imageUrls.toString()}, $price");
                   }
-                }
-                _isUploading =false;
-                setState((){});
-                // context.beamBack(); Error! NO Provider
+                  ItemsModel itemModel = ItemsModel(
+                    itemKey: itemKey,
+                    userKey: userKey,
+                    imageDownloadUrls: imageUrls,
+                    title: _titleController.text,
+                    category: context.read<CategoryNotifier>().categorySelectedEng,
+                    price: price,
+                    negotiable: _pricePrefered,
+                    detail: _detailController.text,
+                    address: userProvider.userModel.address, geoFirePoint: userProvider.userModel.geoFirePoint,
+                    createdDate: DateTime.now().toUtc(),
+                  );
 
-                // ItemsModel(
-                //     itemKey: itemKey,
-                //     userKey: userKey,
-                //     imageDownloadUrls: imageUrls,
-                //     title: _titleController.text,
-                //     category: context.read<CategoryNotifier>().categorySelectedEng,
-                //     price: price,
-                //     negotiable: _pricePrefered,
-                //     detail: _detailController.text,
-                //     address: userProvider.userModel.address, geoFirePoint: userProvider.userModel.geoFirePoint,
-                //     createdDate: DateTime.now().toUtc(),
-                // );
+                  await ItemService().createNewItem(itemModel.toJson(), itemKey);
+                  
+                  try{context.beamBack();}
+                  on ProviderNotFoundException catch(e){logger.d("pass NotProvider");}//어차피 못잡음
+                }
+
+
+                // context.beamBack(); Error! NO Provider
+                _isUploading = false;
               },
 
             ),

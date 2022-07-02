@@ -4,3 +4,4 @@ const SHARED_ADDRESS = 'address';
 const SHARED_LAT = 'latitude';
 const SHARED_LOG = 'longitude';
 const COLLECTION_USER = 'user';
+const COLLECTION_ITEM = 'item';

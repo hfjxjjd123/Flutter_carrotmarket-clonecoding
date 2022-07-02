@@ -50,7 +50,7 @@ class ItemsModel{
   static String generateItemKey(String uid){
     String userKey = uid;
     String timeNow = DateTime.now().millisecondsSinceEpoch.toString();
-    return '$userKey/$timeNow';
+    return '${userKey}_$timeNow';
   }
 
   Map<String, dynamic> toJson() {
