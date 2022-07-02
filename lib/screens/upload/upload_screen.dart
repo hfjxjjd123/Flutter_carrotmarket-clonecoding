@@ -30,7 +30,6 @@ class _UploadScreenState extends State<UploadScreen> {
 
   bool _pricePrefered = false;
   TextEditingController _priceController = TextEditingController();
-
   TextEditingController _titleController = TextEditingController();
   TextEditingController _detailController = TextEditingController();
   bool _isUploading = false;
@@ -192,7 +191,7 @@ class _UploadScreenState extends State<UploadScreen> {
                   );
 
                   await ItemService().createNewItem(itemModel.toJson(), itemKey);
-                  
+
                   try{context.beamBack();}
                   on ProviderNotFoundException catch(e){logger.d("pass NotProvider");}//어차피 못잡음
                 }
