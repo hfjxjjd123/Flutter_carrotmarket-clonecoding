@@ -17,8 +17,6 @@ class UserProvider extends ChangeNotifier{
   User? _user;
   UserModel? _userModel;
 
-  get userModel => _userModel;
-
   void initUser() {
     FirebaseAuth.instance.authStateChanges().listen((user) async{
       _user = user;
@@ -26,8 +24,6 @@ class UserProvider extends ChangeNotifier{
       notifyListeners();
     });
   }
-
-  User? get user => _user;
 
   Future setNewUser(User? user) async {
     _user = user;
@@ -52,6 +48,8 @@ class UserProvider extends ChangeNotifier{
       _userModel = await UserService().getUserModel(userKey);
       logger.d(_userModel!.toJson().toString());
     }
-
     }
+
+  User? get user => _user;
+  UserModel? get userModel => _userModel;
   }

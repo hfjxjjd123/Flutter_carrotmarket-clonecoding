@@ -59,9 +59,7 @@ class EggApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<UserProvider>(
-      create: (BuildContext context) {
-        logger.d("Rebuilding..."); //rebuilding을 안하는데요?
-        return UserProvider(); },
+      create: (BuildContext context) { return UserProvider(); },
       child: MaterialApp.router(
         theme: ThemeData(
           textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(

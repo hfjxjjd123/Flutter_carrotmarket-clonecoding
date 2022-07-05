@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_practice1/screens/sign_up_screen.dart';
 import 'package:flutter_practice1/screens/home_screen.dart';
 import 'package:flutter_practice1/screens/upload/upload_screen.dart';
+import 'package:flutter_practice1/states/item_notifier.dart';
 import 'package:provider/provider.dart';
 import '../screens/upload/upload_category.dart';
 import '../states/category_notifier.dart';
@@ -26,10 +27,12 @@ class UploadLocation extends BeamLocation{
 
   @override
   Widget builder(BuildContext context, Widget navigator) {
-
-    return ChangeNotifierProvider.value(
-        value: categoryNotifier,
-        child: super.builder(context, navigator)
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (BuildContext context)=>ItemNotifier()),
+        ChangeNotifierProvider.value(value: categoryNotifier),
+      ],
+      child: super.builder(context, navigator),
     );
   }
 

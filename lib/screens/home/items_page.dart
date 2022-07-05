@@ -1,6 +1,11 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_practice1/data/address_model.dart';
+import 'package:flutter_practice1/data/items_model.dart';
+import 'package:flutter_practice1/repo/item_service.dart';
 import 'package:flutter_practice1/repo/user_service.dart';
+import 'package:flutter_practice1/states/item_notifier.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../consts/consts.dart';
 import '../../utils/logger.dart';
@@ -10,14 +15,20 @@ class ItemsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return LayoutBuilder(builder: (context, constraints){
       Size size = MediaQuery.of(context).size;
       final imageSize = size.width/4;
 
-      return FutureBuilder(
-        future: Future.delayed(Duration(milliseconds: 400)),
-          builder: (context, snapshot){
-        return (snapshot.connectionState == ConnectionState.done)?buildListView(imageSize):buildShimmerView(imageSize);
+      return FutureBuilder<List<ItemsModel>>(
+        future: ItemService().getItems(),
+          builder: (context, snapshot) {
+          return AnimatedSwitcher(
+            duration: Duration(milliseconds: 300),
+            child: (snapshot.hasData)
+                ?_listView(imageSize, snapshot.data)
+                :_shimmerView(imageSize),
+          );
       });
 
     },
@@ -25,10 +36,12 @@ class ItemsPage extends StatelessWidget {
 
   }
 
-  ListView buildListView(double imageSize) {
+  ListView _listView(double imageSize,List<ItemsModel>? items) {
+    int counter = 0;
+    if(items == null)   items = [];
     return ListView.separated(
         padding: EdgeInsets.all(default_padding),
-        itemCount: 10,
+        itemCount: items.length,
         separatorBuilder: (context, index){
           return Divider(
             height: default_padding*1.5,
@@ -38,29 +51,32 @@ class ItemsPage extends StatelessWidget {
         },
 
         itemBuilder: (context, index){
-          return GestureDetector(
-            behavior: HitTestBehavior.translucent,
+          ItemsModel item = items![index];
+          return InkWell(
             onTap: (){
-              logger.d("TOUCHED!!!");
               // UserService().firestoreTest();
             },
             child: SizedBox(
               height: imageSize,
               child: Row(
                 children: [
-                  ExtendedImage.network(
-                    'https://picsum.photos/100',
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(12)
+                  SizedBox(
+                    width: imageSize, height: imageSize,
+                    child: ExtendedImage.network(
+                      item.imageDownloadUrls[0],
+                      fit: BoxFit.cover,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(12)
+                    ),
                   ),
                   SizedBox(width: small_padding,),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("work", style: Theme.of(context).textTheme.subtitle1),
+                        Text(item.title, style: Theme.of(context).textTheme.subtitle1),
                         Text("12일전", style: Theme.of(context).textTheme.subtitle2),
-                        Text("3,000원"),
+                        Text(item.price.toString()+"원"),
                         Expanded(child: Container()),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -90,14 +106,14 @@ class ItemsPage extends StatelessWidget {
           );
         });
   }
-  Widget buildShimmerView(double imageSize) {
+  Widget _shimmerView(double imageSize) {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
 
       child: ListView.separated(
           padding: EdgeInsets.all(default_padding),
-          itemCount: 10,
+          itemCount: 6,
           separatorBuilder: (context, index){
             return Divider(
               height: default_padding*1.5,

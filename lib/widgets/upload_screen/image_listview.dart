@@ -2,11 +2,12 @@ import 'dart:typed_data';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_practice1/states/item_notifier.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ImageListview extends StatefulWidget {
   ImageListview({Key? key}) : super(key: key);
-
   @override
   State<ImageListview> createState() => _ImageListviewState();
 }
@@ -19,6 +20,9 @@ class _ImageListviewState extends State<ImageListview> {
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+        ItemNotifier itemNotifier = context.watch<ItemNotifier>();
+
+
         final Size size = MediaQuery.of(context).size;
         final double boxSize = size.width*0.4;
         final double insetsSize = size.width*0.05;
@@ -37,13 +41,9 @@ class _ImageListviewState extends State<ImageListview> {
                     onTap: ()async{
                       final ImagePicker _picker = ImagePicker();
                       final List<XFile>? images = await _picker.pickMultiImage(imageQuality: 20);
-                      if(images!=null && images.isNotEmpty){
-                        _selectedImages.clear();
-                        for(int index = 0; index < images.length;index++){
-                          _selectedImages.add(await images[index].readAsBytes());
-                        }
-                        setState((){});
-                      }
+                      if (images != null && images.isNotEmpty) {
+                        await context.read<ItemNotifier>().setNewImages(images);
+        }
                     },
                     child: Container(
                       child: Column(
@@ -63,12 +63,12 @@ class _ImageListviewState extends State<ImageListview> {
                   ),
                 ),
               ),
-              ...List.generate(_selectedImages.length, (index) =>
+              ...List.generate(itemNotifier.images.length, (index) =>
                   Stack(
                     children: [
                       Padding(padding: EdgeInsets.only(top: insetsSize, bottom: insetsSize, right: insetsSize),
                         child: ExtendedImage.memory(
-                          _selectedImages[index],
+                          itemNotifier.images[index],
                           fit: BoxFit.cover,
                           width: innerBoxSize, height: innerBoxSize,
                           shape:BoxShape.rectangle, borderRadius: BorderRadius.circular(15),
@@ -89,15 +89,14 @@ class _ImageListviewState extends State<ImageListview> {
                         ),
                       ),
                       Positioned(
+                        right: boxSize/30, top: boxSize/30,
                         child: IconButton(
                             onPressed: (){
-                              _selectedImages.removeAt(index);
-                              setState((){});
+                              itemNotifier.removeImage(index);
                             },
                             icon: Icon(Icons.remove_circle),
                           iconSize: boxSize/5,
                         ),
-                        right: boxSize/30, top: boxSize/30,
                       )
                     ],
                   ),),

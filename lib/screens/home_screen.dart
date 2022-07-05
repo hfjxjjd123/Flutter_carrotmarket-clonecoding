@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_practice1/main.dart';
 import 'package:flutter_practice1/screens/home/items_page.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
+import 'package:flutter_practice1/utils/logger.dart';
 import 'package:flutter_practice1/widgets/expandable_fab.dart';
 import 'package:provider/provider.dart';
 
@@ -50,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    logger.d("홈스크린 빌드 호출");
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,

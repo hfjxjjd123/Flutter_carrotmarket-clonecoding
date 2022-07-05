@@ -46,7 +46,7 @@ class ItemsModel{
   }
 
   ItemsModel.fromSnapshot(DocumentSnapshot<Map<String,dynamic>> snapshot) :this.fromJson(snapshot.data()!, snapshot.id, snapshot.reference);
-  ItemsModel.fromQuerySnapshot(QueryDocumentSnapshot<Map<String,dynamic>> snapshot) :this.fromJson(snapshot.data()!, snapshot.id, snapshot.reference);
+  ItemsModel.fromQuerySnapshot(QueryDocumentSnapshot<Map<String,dynamic>> snapshot) :this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
 
   static String generateItemKey(String uid){
     String userKey = uid;
