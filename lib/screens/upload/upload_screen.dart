@@ -11,6 +11,7 @@ import 'package:flutter_practice1/data/user_model.dart';
 import 'package:flutter_practice1/main.dart';
 import 'package:flutter_practice1/repo/item_service.dart';
 import 'package:flutter_practice1/repo/upload_image_storage.dart';
+import 'package:flutter_practice1/router/locations.dart';
 import 'package:flutter_practice1/states/category_notifier.dart';
 import 'package:flutter_practice1/states/item_notifier.dart';
 import 'package:flutter_practice1/widgets/upload_screen/dividor.dart';
@@ -98,7 +99,7 @@ class _UploadScreenState extends State<UploadScreen> {
                 padding: EdgeInsets.all(3),
                 child: ListTile(
                   onTap: (){
-                    context.beamToNamed("/upload/select_category");
+                    context.beamToNamed("/$LOCA_UPLOAD/$LOCA_SELECT_CATEGORY");
                   },
                   dense: true,
                   title: Text(

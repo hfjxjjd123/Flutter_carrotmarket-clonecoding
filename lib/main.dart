@@ -92,7 +92,7 @@ class EggApp extends StatelessWidget {
 
 BeamerDelegate _routerDelegate = BeamerDelegate(
   guards: [BeamGuard(
-    pathBlueprints: ["/"],
+    pathBlueprints: [...HomeLocation().pathBlueprints, ...UploadLocation().pathBlueprints, ...ItemLocation().pathBlueprints],
     check: (context, location) {
       return (Provider.of<UserProvider>(context, listen: true).user != null);
 
@@ -100,7 +100,7 @@ BeamerDelegate _routerDelegate = BeamerDelegate(
     showPage: BeamPage(child: SignUpScreen()),
   )],
   locationBuilder: BeamerLocationBuilder(
-      beamLocations: [HomeLocation(),UploadLocation()]),
+      beamLocations: [HomeLocation(),UploadLocation(),ItemLocation()]),
 );
 
 

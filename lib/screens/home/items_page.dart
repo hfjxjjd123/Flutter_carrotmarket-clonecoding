@@ -1,9 +1,11 @@
+import 'package:beamer/beamer.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_practice1/data/address_model.dart';
 import 'package:flutter_practice1/data/items_model.dart';
 import 'package:flutter_practice1/repo/item_service.dart';
 import 'package:flutter_practice1/repo/user_service.dart';
+import 'package:flutter_practice1/router/locations.dart';
 import 'package:flutter_practice1/states/item_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -54,7 +56,7 @@ class ItemsPage extends StatelessWidget {
           ItemsModel item = items![index];
           return InkWell(
             onTap: (){
-              // UserService().firestoreTest();
+              context.beamToNamed('/$LOCA_ITEM/:${item.itemKey}');
             },
             child: SizedBox(
               height: imageSize,

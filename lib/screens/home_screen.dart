@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_practice1/main.dart';
+import 'package:flutter_practice1/router/locations.dart';
 import 'package:flutter_practice1/screens/home/items_page.dart';
 import 'package:flutter_practice1/states/user_provider.dart';
 import 'package:flutter_practice1/utils/logger.dart';
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           MaterialButton(
             onPressed: (){
-              context.beamToNamed('/upload');
+              context.beamToNamed('/$LOCA_UPLOAD');
             },
           child: Icon(Icons.add, color: Colors.white,),
             color: Theme.of(context).primaryColor,
