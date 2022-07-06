@@ -47,8 +47,8 @@ class _UploadScreenState extends State<UploadScreen> {
       _isUploading = true;
       setState((){});
 
-      final String userKey = FirebaseAuth.instance.currentUser!.uid;
-      final String itemKey = ItemsModel.generateItemKey(userKey);
+      final String userkey = FirebaseAuth.instance.currentUser!.uid;
+      final String itemKey = ItemsModel.generateItemKey(userkey);
 
       List<Uint8List> images =  context.read<ItemNotifier>().images;
 
@@ -62,7 +62,7 @@ class _UploadScreenState extends State<UploadScreen> {
 
       ItemsModel itemsModel = ItemsModel(
         itemKey: itemKey,
-        userKey: userKey,
+        userkey: userkey,
         imageDownloadUrls: downloadUrls,
         title: _titleController.text,
         category: category,
@@ -72,7 +72,7 @@ class _UploadScreenState extends State<UploadScreen> {
         createdDate: DateTime.now().toUtc(),
       );
 
-      await ItemService().createNewItem(itemsModel.toJson(), itemKey);
+      await ItemService().createNewItem(itemsModel, itemKey, userkey);
       context.beamBack();
     }
 

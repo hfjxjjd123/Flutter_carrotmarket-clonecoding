@@ -7,9 +7,9 @@ class UserService{
   factory UserService()=>_userService;
   UserService._internal();
   
-  Future createNewUser(Map<String, dynamic> json, String userKey) async{
+  Future createNewUser(Map<String, dynamic> json, String userkey) async{
     
-    DocumentReference<Map<String, dynamic>> documentReference = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
+    DocumentReference<Map<String, dynamic>> documentReference = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userkey);
     final DocumentSnapshot documentSnapshot = await documentReference.get();
     if(!documentSnapshot.exists){
       await documentReference.set(json);  
@@ -17,8 +17,8 @@ class UserService{
     
   }
 
-  Future<UserModel> getUserModel(String userKey)async{
-    DocumentReference<Map<String, dynamic>> documentReference = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userKey);
+  Future<UserModel> getUserModel(String userkey)async{
+    DocumentReference<Map<String, dynamic>> documentReference = FirebaseFirestore.instance.collection(COLLECTION_USER).doc(userkey);
     final DocumentSnapshot<Map<String,dynamic>> documentSnapshot = await documentReference.get();
     UserModel userModel = UserModel.fromSnapshot(documentSnapshot);
     return userModel;

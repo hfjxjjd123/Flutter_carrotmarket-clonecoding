@@ -3,7 +3,7 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 
 class ItemsModel{
   late String itemKey;
-  late String userKey;
+  late String userkey;
   late List<String> imageDownloadUrls;
   late String title;
   late String category;
@@ -17,7 +17,7 @@ class ItemsModel{
 
   ItemsModel({
     required this.itemKey,
-    required this.userKey,
+    required this.userkey,
     required this.imageDownloadUrls,
     required this.title,
     required this.category,
@@ -31,7 +31,7 @@ class ItemsModel{
 
   ItemsModel.fromJson(Map<String, dynamic> json, this.itemKey, this.reference) {
     itemKey = json['itemKey']??"";
-    userKey = json['userKey']??"";
+    userkey = json['userkey']??"";
     imageDownloadUrls = json['imageDownloadUrls'] != null ? json['imageDownloadUrls'].cast<String>() : [];
     title = json['title']??"";
     category = json['category']??"none";
@@ -49,15 +49,15 @@ class ItemsModel{
   ItemsModel.fromQuerySnapshot(QueryDocumentSnapshot<Map<String,dynamic>> snapshot) :this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
 
   static String generateItemKey(String uid){
-    String userKey = uid;
+    String userkey = uid;
     String timeNow = DateTime.now().millisecondsSinceEpoch.toString();
-    return '${userKey}_$timeNow';
+    return '${userkey}_$timeNow';
   }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['itemKey']=itemKey;
-    map['userKey'] = userKey;
+    map['userkey'] = userkey;
     map['imageDownloadUrls'] = imageDownloadUrls;
     map['title'] = title;
     map['category'] = category;
@@ -68,5 +68,13 @@ class ItemsModel{
     map['geoFirePoint'] = geoFirePoint.data;
     map['createdDate'] = createdDate;
     return map;
+  }
+  Map<String, dynamic> toMinJson() {
+    final map = <String, dynamic>{};
+    map['itemKey']=itemKey;
+    map['imageDownloadUrls'] = [imageDownloadUrls[0]];
+    map['title'] = title;
+    map['price'] = price;
+       return map;
   }
 }

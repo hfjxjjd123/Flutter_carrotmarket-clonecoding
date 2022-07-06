@@ -10,6 +10,7 @@ class UserModel{
   DocumentReference? refs;
 
   UserModel({
+    this.userkey,
     required this.phoneNumber,
     required this.address,
     required this.geoFirePoint,

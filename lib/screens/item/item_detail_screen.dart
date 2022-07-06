@@ -169,13 +169,25 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                               ]
                             ),
                         ),
-                        SliverPadding(
-                          padding: EdgeInsets.symmetric(horizontal: default_padding),
-                          sliver: SliverGrid.count(
-                            crossAxisSpacing: default_padding,
-                            crossAxisCount: 2,
-                            childAspectRatio: 5/6,
-                            children: List.generate(10, (index) => SimilarItem()),
+                        SliverToBoxAdapter(
+                          child: FutureBuilder<List<ItemsModel>>(
+                            future: ItemService().getUserItems(userModel.userkey!),
+                            builder: (context, snapshot){
+                              if(snapshot.hasData){
+                                return Padding(
+                                  padding: const EdgeInsets.all(default_padding),
+                                  child: GridView.count(
+                                    shrinkWrap: true,
+                                    crossAxisSpacing: default_padding,
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 5/6,
+                                    children: List.generate(snapshot.data!.length, (index) => SimilarItem(snapshot.data![index])),
+                                  ),
+                                );
+                              }
+                              return Container();
+
+                            },
                           ),
                         ),
                       ],
