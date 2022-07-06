@@ -22,7 +22,8 @@ class ItemService{
   Future<ItemsModel> getItemModel(String itemKey)async{
     DocumentReference<Map<String, dynamic>> documentReference = FirebaseFirestore.instance.collection(COLLECTION_ITEM).doc(itemKey);
     final DocumentSnapshot<Map<String,dynamic>> documentSnapshot = await documentReference.get();
-    ItemsModel itemsModel =ItemsModel.fromSnapshot(documentSnapshot);
+    ItemsModel itemsModel = ItemsModel.fromSnapshot(documentSnapshot);
+    logger.d(itemsModel.toString());
     return itemsModel;
   }
 

@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       appBar: AppBar(
         centerTitle: false,
-        title: Text("신천동", style: Theme.of(context).appBarTheme.titleTextStyle,),
+        title: Text(context.read<UserProvider>().userModel!.address, style: Theme.of(context).appBarTheme.titleTextStyle,),
         actions: [
           IconButton(onPressed: (){}, icon: Icon(Icons.search)),
           IconButton(onPressed: (){}, icon: Icon(Icons.menu)),

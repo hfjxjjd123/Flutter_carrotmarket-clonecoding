@@ -56,6 +56,7 @@ class ItemsModel{
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['itemKey']=itemKey;
     map['userKey'] = userKey;
     map['imageDownloadUrls'] = imageDownloadUrls;
     map['title'] = title;

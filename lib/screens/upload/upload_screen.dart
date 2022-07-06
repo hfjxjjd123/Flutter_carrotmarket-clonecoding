@@ -54,6 +54,8 @@ class _UploadScreenState extends State<UploadScreen> {
 
       UserProvider userProvider = context.read<UserProvider>();
 
+      String category = context.read<CategoryNotifier>().categorySelectedEng;
+
       List<String> downloadUrls = await UploadImageStorage.uploadImageGetURLS(images, itemKey);
 
       final num? price = num.tryParse(_priceController.text.replaceAll(',', '').replaceFirst('원', ''));
@@ -63,7 +65,7 @@ class _UploadScreenState extends State<UploadScreen> {
         userKey: userKey,
         imageDownloadUrls: downloadUrls,
         title: _titleController.text,
-        category: context.read<CategoryNotifier>().categorySelectedEng,
+        category: category,
         price: price??0,
         negotiable: _pricePrefered, detail: _detailController.text,
         address: userProvider.userModel!.address, geoFirePoint: userProvider.userModel!.geoFirePoint,

@@ -7,6 +7,7 @@ import 'package:flutter_practice1/repo/item_service.dart';
 import 'package:flutter_practice1/repo/user_service.dart';
 import 'package:flutter_practice1/router/locations.dart';
 import 'package:flutter_practice1/states/item_notifier.dart';
+import 'package:flutter_practice1/utils/time_calculation.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../consts/consts.dart';
@@ -56,7 +57,8 @@ class ItemsPage extends StatelessWidget {
           ItemsModel item = items![index];
           return InkWell(
             onTap: (){
-              context.beamToNamed('/$LOCA_ITEM/:${item.itemKey}');
+              logger.d("보내는 주소 : " + "/$LOCA_ITEM/:${item.itemKey}");
+              context.beamToNamed("/$LOCA_ITEM/:${item.itemKey}");
             },
             child: SizedBox(
               height: imageSize,
@@ -77,7 +79,7 @@ class ItemsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(item.title, style: Theme.of(context).textTheme.subtitle1),
-                        Text("12일전", style: Theme.of(context).textTheme.subtitle2),
+                        Text(TimeCalculation.getTimeDiff(item.createdDate), style: Theme.of(context).textTheme.subtitle2),
                         Text(item.price.toString()+"원"),
                         Expanded(child: Container()),
                         Row(
@@ -91,7 +93,7 @@ class ItemsPage extends StatelessWidget {
                                   children: [
                                     Icon(Icons.chat, color: Colors.grey[700],),
                                     Text('23',style: TextStyle(color: Colors.grey[700]),),
-                                    Icon(Icons.heart_broken,color: Colors.grey[700],),
+                                    Icon(Icons.favorite,color: Colors.grey[700],),
                                     Text('93',style: TextStyle(color: Colors.grey[700]),),
                                   ],
                                 ),
